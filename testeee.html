@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Surpresa Interativa</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+      height: 100vh;
+      position: relative;
+    }
+    .container {
+      padding: 50px 20px;
+      position: relative;
+      height: 100%;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    .btn {
+      background: #ff4e50;
+      border: none;
+      color: white;
+      padding: 12px 25px;
+      margin: 15px;
+      font-size: 1em;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+      position: relative;
+    }
+    .btn:hover {
+      background: #fc913a;
+      transform: scale(1.05);
+    }
+    .message, .photo {
+      display: none;
+      margin-top: 30px;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    img {
+      max-width: 300px;
+      border-radius: 15px;
+      margin-top: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    #movingBtn {
+      position: absolute;
+      background: #00e676;
+      color: #121212;
+      padding: 12px 20px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1em;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Uma surpresa pra você</h1>
+    <button class="btn" onclick="showStep(1)">Abrir</button>
+
+    <div id="step1" class="message">
+      <h2>Você é muito especial pra mim</h2>
+      <button class="btn" onclick="showStep(2)">Continuar</button>
+    </div>
+
+    <div id="step2" class="message">
+      <h2>Olha essa lembrança!</h2>
+      <img src="https://placekitten.com/400/300" alt="Foto do casal">
+      <button class="btn" onclick="showStep(3)">Próximo</button>
+    </div>
+
+    <div id="step3" class="message">
+      <h2>Agora vem a surpresa divertida!</h2>
+      <p>Clique no botão verde que se move para revelar algo especial</p>
+      <button id="movingBtn">Clique aqui!</button>
+    </div>
+
+    <div id="step4" class="message">
+      <h2>Você conseguiu! 🎉</h2>
+      <p>Essa é a surpresa: eu te amo muito!</p>
+      <img src="https://placekitten.com/401/301" alt="Foto surpresa">
+      <button class="btn" onclick="showStep(5)">Finalizar</button>
+    </div>
+
+    <div id="step5" class="message">
+      <h2>Obrigado por abrir a surpresa inteira</h2>
+      <p>Aqui você pode colocar música, mais fotos ou mensagem final.</p>
+    </div>
+  </div>
+
+  <script>
+    function showStep(n) {
+      document.querySelectorAll(".message").forEach(el => el.style.display = "none");
+      const step = document.getElementById("step" + n);
+      if(step) step.style.display = "block";
+    }
+
+    // Botão que se move devagar e faz parte da surpresa
+    const btn = document.getElementById("movingBtn");
+    const container = document.querySelector(".container");
+
+    function moveButton() {
+      const maxX = container.clientWidth - btn.offsetWidth - 20;
+      const maxY = container.clientHeight - btn.offsetHeight - 20;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
+    }
+
+    let interval;
+    btn.addEventListener("mouseenter", () => {
+      // Move a cada 1s enquanto o mouse estiver sobre
+      interval = setInterval(moveButton, 800);
+    });
+    btn.addEventListener("mouseleave", () => {
+      clearInterval(interval);
+    });
+
+    // Clicou no botão revela a próxima etapa
+    btn.addEventListener("click", () => {
+      showStep(4);
+    });
+
+    // Inicializa posição
+    moveButton();
+  </script>
+</body>
+</html>
+
